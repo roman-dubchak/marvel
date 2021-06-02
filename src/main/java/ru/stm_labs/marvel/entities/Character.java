@@ -24,4 +24,12 @@ public class Character extends BaseEntity {
     @OneToMany(mappedBy = "characterId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ImageCharacter> images;
+
+    @ManyToMany
+    @JoinTable(
+            name = "character_comic",
+            joinColumns = @JoinColumn(name = "character_id"),
+            inverseJoinColumns = @JoinColumn(name = "comic-id"))
+    private List<Comic> comics;
+
 }
