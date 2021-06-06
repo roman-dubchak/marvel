@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2021-02-06-09-55" author="Roman Dubchak">
+        <comment>create table "character"</comment>
+        <createTable tableName="character">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(90)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resource_uri" type="VARCHAR(350)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2021-02-06-10-55" author="Roman Dubchak">
+        <comment>create table "comic"</comment>
+        <createTable tableName="comic">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(90)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="format" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="page_count" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(1100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resource_uri" type="VARCHAR(350)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2021-06-06-18-55" author="Roman Dubchak">
+        <comment>create table "character_comic"</comment>
+        <createTable tableName="character_comic">
+            <column name="comic_id" type="BIGINT">
+                <constraints nullable="false" primaryKeyName="PK_CHARACTER_COMIC"/>
+            </column>
+            <column name="character_id" type="BIGINT">
+                <constraints nullable="false" primaryKeyName="PK_CHARACTER_COMIC"/>
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2021-06-06-18-50" author="Roman Dubchak">
+        <comment>create table "image_character"</comment>
+        <createTable tableName="image_character">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="path" type="VARCHAR(350)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="character_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2021-06-06-18-52" author="Roman Dubchak">
+        <comment>create table "image_comic"</comment>
+        <createTable tableName="image_comic">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="path" type="VARCHAR(350)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comic_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2021-06-06-18-54" author="Roman Dubchak">
+        <comment>create table "comic_price"</comment>
+        <createTable tableName="comic_price">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="comic_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2021-06-06-18-56" author="Roman Dubchak">
+        <comment>create PK_CHARACTER_COMIC</comment>
+        <addPrimaryKey columnNames="comic_id, character_id"
+                       constraintName="PK_CHARACTER_COMIC"
+                       tableName="character_comic"/>
+    </changeSet>
+
+    <changeSet id="2021-06-06-18-58" author="Roman Dubchak">
+        <comment>create fk_comic_cc</comment>
+        <addForeignKeyConstraint baseColumnNames="comic_id"
+                                 baseTableName="character_comic"
+                                 constraintName="fk_comic_cc"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comic"/>
+    </changeSet>
+
+    <changeSet id="2021-06-06-19-00" author="Roman Dubchak">
+        <comment>create fk_character_cc</comment>
+        <addForeignKeyConstraint baseColumnNames="character_id"
+                                 baseTableName="character_comic"
+                                 constraintName="fk_character_cc"
+                                 referencedColumnNames="id"
+                                 referencedTableName="character"/>
+    </changeSet>
+
+    <changeSet id="2021-06-06-19-02" author="Roman Dubchak">
+        <comment>create fk_character_ic</comment>
+        <addForeignKeyConstraint baseColumnNames="character_id"
+                                 baseTableName="image_character"
+                                 constraintName="fk_character_ic"
+                                 referencedColumnNames="id"
+                                 referencedTableName="character"/>
+    </changeSet>
+
+    <changeSet id="2021-06-06-19-04" author="Roman Dubchak">
+        <comment>create fk_comic_ic</comment>
+        <addForeignKeyConstraint baseColumnNames="comic_id"
+                                 baseTableName="image_comic"
+                                 constraintName="fk_comic_ic"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comic"/>
+    </changeSet>
+
+    <changeSet id="2021-06-06-19-06" author="Roman Dubchak">
+        <comment>create fk_comic_cp</comment>
+        <addForeignKeyConstraint baseColumnNames="comic_id"
+                                 baseTableName="comic_price"
+                                 constraintName="fk_comic_cp"
+                                 referencedColumnNames="id"
+                                 referencedTableName="comic"/>
+    </changeSet>
+
+</databaseChangeLog>

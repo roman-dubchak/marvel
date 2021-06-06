@@ -1,13 +1,18 @@
 package ru.stm_labs.marvel.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Data
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "character")
 public class Character extends BaseEntity {
@@ -26,10 +31,18 @@ public class Character extends BaseEntity {
     private List<ImageCharacter> images;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "character_comic",
             joinColumns = @JoinColumn(name = "character_id"),
             inverseJoinColumns = @JoinColumn(name = "comic-id"))
     private List<Comic> comics;
+
+    public void addImages(ImageCharacter imageCharacter) {
+        if (imageCharacter == null) {
+            images = new ArrayList<>();
+        }
+        images.add(imageCharacter);
+    }
 
 }

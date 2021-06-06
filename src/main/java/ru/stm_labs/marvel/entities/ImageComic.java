@@ -2,16 +2,18 @@ package ru.stm_labs.marvel.entities;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
-@Table (name ="image_comic")
-public class ImageComic extends BaseEntity{
+@Table(name = "image_comic")
+public class ImageComic extends BaseEntity {
 
     @Column(name = "path")
     private String path;
+
+    @ManyToOne
+    @JoinColumn(name = "comic_id")
+    private Comic comicId;
 
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -44,5 +45,12 @@ public class Comic extends BaseEntity {
             joinColumns = @JoinColumn(name = "comic-id"),
             inverseJoinColumns = @JoinColumn(name = "character_id"))
     private List<Character> characters;
+
+    private void addImages (ImageComic imageComic){
+        if (imageComic == null) {
+            images = new ArrayList<>();
+        }
+        images.add(imageComic);
+    }
 
 }
