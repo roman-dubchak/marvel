@@ -3,11 +3,11 @@ package ru.stm_labs.marvel.servicies.impl;
 import org.springframework.stereotype.Service;
 import ru.stm_labs.marvel.dto.CharacterDtoRequest;
 import ru.stm_labs.marvel.dto.mapper.CharacterMapper;
+import ru.stm_labs.marvel.entities.Character;
 import ru.stm_labs.marvel.repositories.CharacterRepository;
 import ru.stm_labs.marvel.servicies.CharacterService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -35,8 +35,12 @@ public class CharacterServiceImpl implements CharacterService {
                 () -> new RuntimeException());
 
         Character character = CharacterMapper.MAPPER.toCharacter(characterDtoRequest);
-        characterUpd = CharacterMapper.MAPPER.toCharacter(character);
+//        characterUpd = CharacterMapper.MAPPER.toCharacter(character);
         //TODO set fields
+        characterUpd.setName(character.getName());
+        characterUpd.setDescription(character.getDescription());
+        characterUpd.setName(character.getName());
+        characterUpd.setResourceUri(character.getResourceUri());
 
         return characterRepository.save(characterUpd);
     }
