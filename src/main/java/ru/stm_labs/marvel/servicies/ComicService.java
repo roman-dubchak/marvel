@@ -1,7 +1,6 @@
 package ru.stm_labs.marvel.servicies;
 
 import org.springframework.stereotype.Service;
-import ru.stm_labs.marvel.dto.CharacterDtoRequest;
 import ru.stm_labs.marvel.dto.ComicDtoRequest;
 import ru.stm_labs.marvel.entities.Comic;
 

@@ -9,10 +9,6 @@ import java.util.List;
 
 
 @Data
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Entity
 @Table(name = "character")
 public class Character extends BaseEntity {

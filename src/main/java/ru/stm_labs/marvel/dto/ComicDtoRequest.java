@@ -1,14 +1,8 @@
 package ru.stm_labs.marvel.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import ru.stm_labs.marvel.entities.ComicPrice;
-import ru.stm_labs.marvel.entities.ImageComic;
+import ru.stm_labs.marvel.entities.Comic;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -40,7 +34,21 @@ public class ComicDtoRequest {
     @NotEmpty
     private String resourceUri;
 
-    @NotNull
+    @NotEmpty
     private List<ComicPriceDtoRequest> prices;
+
+    @NotEmpty
+    private List<Long> charactersIds;
+
+    public Comic toComicFromDto(ComicDtoRequest comicDtoRequest) {
+        Comic comic = new Comic();
+        comic.setTitle(comicDtoRequest.getTitle());
+        comic.setDescription(comicDtoRequest.getDescription());
+        comic.setFormat(comicDtoRequest.getFormat());
+        comic.setPageCount(comicDtoRequest.getPageCount());
+        comic.setText(comicDtoRequest.getText());
+        comic.setResourceUri(comicDtoRequest.getResourceUri());
+        return comic;
+    }
 
 }

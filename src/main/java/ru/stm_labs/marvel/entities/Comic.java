@@ -1,6 +1,5 @@
 package ru.stm_labs.marvel.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -31,11 +30,11 @@ public class Comic extends BaseEntity {
     @Column(name = "resource_uri")
     private String resourceUri;
 
-    @OneToMany(mappedBy = "comicId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comicId", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ComicPrice> prices;
 
-    @OneToMany(mappedBy = "comicId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comicId", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ImageComic> images;
 

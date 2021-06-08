@@ -7,6 +7,8 @@ import ru.stm_labs.marvel.dto.CharacterDtoRequest;
 import ru.stm_labs.marvel.entities.Character;
 import ru.stm_labs.marvel.servicies.CharacterService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/character")
 public class CharacterController {
@@ -23,7 +25,7 @@ public class CharacterController {
     }
 
     @PostMapping
-    public ResponseEntity<CharacterDtoRequest> post(@RequestBody CharacterDtoRequest characterDtoRequest) {
+    public ResponseEntity<CharacterDtoRequest> post(@RequestBody @Valid CharacterDtoRequest characterDtoRequest) {
         characterService.save(characterDtoRequest);
         return new ResponseEntity<>(characterDtoRequest, HttpStatus.OK);
     }
@@ -31,7 +33,7 @@ public class CharacterController {
     @PutMapping("/{id}")
     public ResponseEntity<CharacterDtoRequest> put(
             @PathVariable("id") Long id,
-            @RequestBody CharacterDtoRequest characterDtoRequest) {
+            @RequestBody @Valid CharacterDtoRequest characterDtoRequest) {
         characterService.update(characterDtoRequest, id);
         return new ResponseEntity<>(characterDtoRequest, HttpStatus.OK);
     }

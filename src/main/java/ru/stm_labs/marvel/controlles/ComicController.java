@@ -7,6 +7,8 @@ import ru.stm_labs.marvel.dto.ComicDtoRequest;
 import ru.stm_labs.marvel.entities.Comic;
 import ru.stm_labs.marvel.servicies.ComicService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/comic")
 public class ComicController {
@@ -23,7 +25,7 @@ public class ComicController {
     }
 
     @PostMapping
-    public ResponseEntity<ComicDtoRequest> post(@RequestBody ComicDtoRequest comicDtoRequest) {
+    public ResponseEntity<ComicDtoRequest> post(@RequestBody @Valid ComicDtoRequest comicDtoRequest) {
         comicService.save(comicDtoRequest);
         return new ResponseEntity<>(comicDtoRequest, HttpStatus.OK);
     }
@@ -31,7 +33,7 @@ public class ComicController {
     @PutMapping("/{id}")
     public ResponseEntity<ComicDtoRequest> put(
             @PathVariable("id") Long id,
-            @RequestBody ComicDtoRequest comicDtoRequest) {
+            @RequestBody @Valid ComicDtoRequest comicDtoRequest) {
         comicService.update(comicDtoRequest, id);
         return new ResponseEntity<>(comicDtoRequest, HttpStatus.OK);
     }

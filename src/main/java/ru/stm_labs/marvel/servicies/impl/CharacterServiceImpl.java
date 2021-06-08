@@ -25,7 +25,8 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public Character save(CharacterDtoRequest characterDtoRequest) {
-        Character character = CharacterMapper.MAPPER.toCharacter(characterDtoRequest);
+        Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
+        System.out.println("Character save: " + character);
         return characterRepository.save(character);
     }
 
@@ -34,9 +35,11 @@ public class CharacterServiceImpl implements CharacterService {
         Character characterUpd = characterRepository.findById(id).orElseThrow(
                 () -> new RuntimeException());
 
-        Character character = CharacterMapper.MAPPER.toCharacter(characterDtoRequest);
+        Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
+//                CharacterMapper.MAPPER.toCharacter(characterDtoRequest);
 //        characterUpd = CharacterMapper.MAPPER.toCharacter(character);
         //TODO set fields
+
         characterUpd.setName(character.getName());
         characterUpd.setDescription(character.getDescription());
         characterUpd.setName(character.getName());

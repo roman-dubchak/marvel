@@ -1,21 +1,19 @@
 package ru.stm_labs.marvel.entities;
 
+import liquibase.pro.packaged.W;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements Serializable {
+@Entity
+@Table
+public class ComicCharacter{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private ComicCharacterId comicCharacterId;
 
     @Column(name = "created")
     @CreationTimestamp

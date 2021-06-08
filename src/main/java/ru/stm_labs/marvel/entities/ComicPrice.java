@@ -1,7 +1,9 @@
 package ru.stm_labs.marvel.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,19 +12,8 @@ import javax.persistence.*;
 @Table(name = "comic_price")
 public class ComicPrice extends BaseEntity {
 
-    @Getter
-    enum TypeComic {
-
-        PRINT(1),
-        DIGITAL(2);
-
-        private int typeComic;
-
-        TypeComic(int typeComic) {
-        }
-    }
-
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private TypeComic typeComic;
 
     @Column(name = "price")
