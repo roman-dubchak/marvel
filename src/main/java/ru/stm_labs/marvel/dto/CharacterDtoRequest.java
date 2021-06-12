@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 @Data
 public class CharacterDtoRequest {
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле name не должно быть пустым!")
+    @NotEmpty(message = "Поле name не должно быть пустым!")
     private String name;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле description не должно быть пустым!")
+    @NotEmpty(message = "Поле description не должно быть пустым!")
     private String description;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле url не должно быть пустым!")
+    @NotEmpty(message = "Поле url не должно быть пустым!")
     private String resourceUri;
 
     private List<Long> comicsIds;

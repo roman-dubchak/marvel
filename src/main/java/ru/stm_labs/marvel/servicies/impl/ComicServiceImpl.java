@@ -2,39 +2,42 @@ package ru.stm_labs.marvel.servicies.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.stm_labs.marvel.dto.ComicDtoRequest;
+import ru.stm_labs.marvel.entities.*;
 import ru.stm_labs.marvel.entities.Character;
-import ru.stm_labs.marvel.entities.Comic;
-import ru.stm_labs.marvel.entities.ComicCharacter;
-import ru.stm_labs.marvel.entities.ComicPrice;
-import ru.stm_labs.marvel.repositories.CharacterRepository;
-import ru.stm_labs.marvel.repositories.ComicCharacterRepository;
-import ru.stm_labs.marvel.repositories.ComicPriceRepository;
-import ru.stm_labs.marvel.repositories.ComicRepository;
+import ru.stm_labs.marvel.repositories.*;
 import ru.stm_labs.marvel.servicies.ComicService;
+import ru.stm_labs.marvel.servicies.ImagesFileService;
 
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalLong;
 import java.util.stream.Collectors;
 
 @Service
 public class ComicServiceImpl implements ComicService {
 
+    private static final String FOLDER_ENTITY = "/comic/";
+
     private final ComicRepository comicRepository;
     private final ComicPriceRepository comicPriceRepository;
     private final ComicCharacterRepository comicCharacterRepository;
     private final CharacterRepository characterRepository;
+    private final ImageComicRepository imageComicRepository;
+    private final ImagesFileService imagesFileService;
 
     public ComicServiceImpl(ComicRepository comicRepository,
                             ComicPriceRepository comicPriceRepository,
                             ComicCharacterRepository comicCharacterRepository,
-                            CharacterRepository characterRepository) {
+                            CharacterRepository characterRepository,
+                            ImageComicRepository imageComicRepository,
+                            ImagesFileService imagesFileService) {
         this.comicRepository = comicRepository;
         this.comicPriceRepository = comicPriceRepository;
         this.comicCharacterRepository = comicCharacterRepository;
         this.characterRepository = characterRepository;
+        this.imageComicRepository = imageComicRepository;
+        this.imagesFileService = imagesFileService;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class ComicServiceImpl implements ComicService {
 
     @Transactional
     @Override
-    public Comic save(ComicDtoRequest comicDtoRequest) {
+    public Comic save(ComicDtoRequest comicDtoRequest, MultipartFile file) {
         //TODO если нет id
         List<Character> idCharacterList = characterRepository.findAllById(comicDtoRequest.getCharactersIds());
         if(idCharacterList.isEmpty()){
@@ -61,8 +64,19 @@ public class ComicServiceImpl implements ComicService {
 
         List<ComicCharacter> comicCharacter = comicDtoRequest.toComicCharacterList(comicDtoRequest, comic);
 
+//        ImageComic imageComic = comicDtoRequest.toImageComic(comicDtoRequest, comic, FOLDER_NAME);
+
+//        ImageComic imageComic = new ImageComic();
+//        imageComic.setComicId(comic);
+//        Path path = imagesFileService.saveFileInDisk(comicDtoRequest.getImage(), FOLDER_ENTITY);
+//        imageComic.setPath(path.toString());
+
         comicPriceRepository.saveAll(comicPrices);
         comicCharacterRepository.saveAll(comicCharacter);
+
+        imagesFileService.saveImageComicInRepository(comic, file, FOLDER_ENTITY);
+//        imagesFileService.saveFile(comicDtoRequest.getImage(), FOLDER_ENTITY);
+//        imageComicRepository.save(imageComic);
         return comic;
     }
 

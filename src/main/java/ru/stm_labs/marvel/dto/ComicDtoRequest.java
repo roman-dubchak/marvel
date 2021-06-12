@@ -1,47 +1,52 @@
 package ru.stm_labs.marvel.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 import ru.stm_labs.marvel.entities.Comic;
 import ru.stm_labs.marvel.entities.ComicCharacter;
 import ru.stm_labs.marvel.entities.ComicCharacterId;
+import ru.stm_labs.marvel.entities.ImageComic;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 public class ComicDtoRequest {
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле title не должно быть пустым!")
+    @NotEmpty(message = "Поле title не должно быть пустым!")
     private String title;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле description не должно быть пустым!")
+    @NotEmpty(message = "Поле description не должно быть пустым!")
     private String description;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле format не должно быть пустым!")
+    @NotEmpty(message = "Поле format не должно быть пустым!")
     private String format;
 
-    @Min(1)
+    @Min(value = 1, message = "Минимальное значение pages = 1")
     private Integer pageCount;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле text не должно быть пустым!")
+    @NotEmpty(message = "Поле text не должно быть пустым!")
     private String text;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "Поле url не должно быть пустым!")
+    @NotEmpty(message = "Поле url не должно быть пустым!")
     private String resourceUri;
 
-    @NotEmpty
+    @NotNull(message = "Поле prices не должно быть пустым!")
+    @NotEmpty(message = "Поле prices не должно быть пустым!")
     private List<ComicPriceDtoRequest> prices;
 
-    @NotEmpty
+    @NotNull(message = "Поле characters id не должно быть пустым!")
+    @NotEmpty(message = "Поле characters id не должно быть пустым!")
     private List<Long> charactersIds;
 
     public Comic toComicFromDto(ComicDtoRequest comicDtoRequest) {
@@ -72,4 +77,5 @@ public class ComicDtoRequest {
         comicCharacter.setComicCharacterId(comicCharacterId);
         return comicCharacter;
     }
+
 }

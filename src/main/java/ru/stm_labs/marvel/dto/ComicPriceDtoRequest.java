@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @Data
 public class ComicPriceDtoRequest {
 
-    @NotEmpty
-    @NotNull
+    @NotEmpty(message = "Поле type не должно быть пустым!")
+    @NotNull(message = "Поле type не должно быть пустым!")
     private String typeComic;
 
-    @NotNull
+    @NotNull(message = "Поле price не должно быть пустым!")
     @DecimalMin(value = "0.01", message = "минимальное значение 0")
     private Double price;
 
