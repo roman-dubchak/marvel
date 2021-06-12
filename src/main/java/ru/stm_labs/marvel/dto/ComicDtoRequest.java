@@ -2,11 +2,15 @@ package ru.stm_labs.marvel.dto;
 
 import lombok.Data;
 import ru.stm_labs.marvel.entities.Comic;
+import ru.stm_labs.marvel.entities.ComicCharacter;
+import ru.stm_labs.marvel.entities.ComicCharacterId;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ComicDtoRequest {
@@ -51,4 +55,21 @@ public class ComicDtoRequest {
         return comic;
     }
 
+    public List<ComicCharacter> toComicCharacterList(ComicDtoRequest comicDtoRequest, Comic comic) {
+        List<ComicCharacter> comicCharacters = comicDtoRequest.getCharactersIds().
+                stream()
+                .map(i -> comicCharacterCreated(comic.getId(), i))
+                .collect(Collectors.toList());
+
+        return comicCharacters;
+    }
+
+    private ComicCharacter comicCharacterCreated(Long comicId, Long characterId) {
+        ComicCharacter comicCharacter = new ComicCharacter();
+        ComicCharacterId comicCharacterId = new ComicCharacterId();
+        comicCharacterId.setComicId(comicId);
+        comicCharacterId.setCharacterId(characterId);
+        comicCharacter.setComicCharacterId(comicCharacterId);
+        return comicCharacter;
+    }
 }

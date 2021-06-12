@@ -1,10 +1,14 @@
 package ru.stm_labs.marvel.servicies.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.stm_labs.marvel.dto.CharacterDtoRequest;
-import ru.stm_labs.marvel.dto.mapper.CharacterMapper;
 import ru.stm_labs.marvel.entities.Character;
+import ru.stm_labs.marvel.entities.Comic;
+import ru.stm_labs.marvel.entities.ComicCharacter;
 import ru.stm_labs.marvel.repositories.CharacterRepository;
+import ru.stm_labs.marvel.repositories.ComicCharacterRepository;
+import ru.stm_labs.marvel.repositories.ComicRepository;
 import ru.stm_labs.marvel.servicies.CharacterService;
 
 import java.util.List;
@@ -13,9 +17,16 @@ import java.util.List;
 public class CharacterServiceImpl implements CharacterService {
 
     private final CharacterRepository characterRepository;
+    private final ComicRepository comicRepository;
+    private final ComicCharacterRepository comicCharacterRepository;
 
-    public CharacterServiceImpl(CharacterRepository characterRepository) {
+
+    public CharacterServiceImpl(CharacterRepository characterRepository,
+                                ComicRepository comicRepository,
+                                ComicCharacterRepository comicCharacterRepository) {
         this.characterRepository = characterRepository;
+        this.comicRepository = comicRepository;
+        this.comicCharacterRepository = comicCharacterRepository;
     }
 
     @Override
@@ -23,11 +34,22 @@ public class CharacterServiceImpl implements CharacterService {
         return characterRepository.findById(id).get();
     }
 
+    @Transactional
     @Override
     public Character save(CharacterDtoRequest characterDtoRequest) {
+        //TODO если нет id
+        List<Comic> idComicList = comicRepository.findAllById(characterDtoRequest.getComicsIds());
+        if(idComicList.isEmpty()){
+            throw new RuntimeException("");
+        }
+
         Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
         System.out.println("Character save: " + character);
-        return characterRepository.save(character);
+        characterRepository.save(character);
+
+        List<ComicCharacter> comicCharacters = characterDtoRequest.toComicCharacterList(characterDtoRequest, character);
+        comicCharacterRepository.saveAll(comicCharacters);
+        return character;
     }
 
     @Override
@@ -36,10 +58,6 @@ public class CharacterServiceImpl implements CharacterService {
                 () -> new RuntimeException());
 
         Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
-//                CharacterMapper.MAPPER.toCharacter(characterDtoRequest);
-//        characterUpd = CharacterMapper.MAPPER.toCharacter(character);
-        //TODO set fields
-
         characterUpd.setName(character.getName());
         characterUpd.setDescription(character.getDescription());
         characterUpd.setName(character.getName());

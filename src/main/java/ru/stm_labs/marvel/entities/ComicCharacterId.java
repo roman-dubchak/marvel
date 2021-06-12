@@ -1,12 +1,10 @@
 package ru.stm_labs.marvel.entities;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @Embeddable

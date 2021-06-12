@@ -22,10 +22,6 @@ public class ComicPriceDtoRequest {
     @DecimalMin(value = "0.01", message = "минимальное значение 0")
     private Double price;
 
-    @NotEmpty
-    private List<Long> comicIds;
-
-
     public ComicPrice toComicPriceFromDto(ComicPriceDtoRequest comicPriceDtoRequest, Comic comic) {
         ComicPrice comicPrice = new ComicPrice();
         comicPrice.setTypeComic(TypeComic.typeComic(comicPriceDtoRequest.getTypeComic()));
@@ -40,5 +36,6 @@ public class ComicPriceDtoRequest {
                 .map(c -> toComicPriceFromDto(c, comic))
                 .collect(Collectors.toList());
     }
+
 
 }
