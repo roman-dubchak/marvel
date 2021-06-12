@@ -1,17 +1,18 @@
 package ru.stm_labs.marvel.entities;
 
-import liquibase.pro.packaged.W;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.annotation.PostConstruct;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "character_comic")
-public class ComicCharacter{
+@Table(name = "comic_character")
+public class ComicCharacter {
 
     @EmbeddedId
     private ComicCharacterId comicCharacterId;
