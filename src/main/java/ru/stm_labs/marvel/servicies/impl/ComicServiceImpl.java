@@ -2,15 +2,12 @@ package ru.stm_labs.marvel.servicies.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import ru.stm_labs.marvel.dto.ComicDtoRequest;
 import ru.stm_labs.marvel.entities.*;
 import ru.stm_labs.marvel.entities.Character;
 import ru.stm_labs.marvel.repositories.*;
 import ru.stm_labs.marvel.servicies.ComicService;
-import ru.stm_labs.marvel.servicies.ImagesFileService;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,14 +21,14 @@ public class ComicServiceImpl implements ComicService {
     private final ComicCharacterRepository comicCharacterRepository;
     private final CharacterRepository characterRepository;
     private final ImageComicRepository imageComicRepository;
-    private final ImagesFileService imagesFileService;
+    private final ImageComicServiceImpl imagesFileService;
 
     public ComicServiceImpl(ComicRepository comicRepository,
                             ComicPriceRepository comicPriceRepository,
                             ComicCharacterRepository comicCharacterRepository,
                             CharacterRepository characterRepository,
                             ImageComicRepository imageComicRepository,
-                            ImagesFileService imagesFileService) {
+                            ImageComicServiceImpl imagesFileService) {
         this.comicRepository = comicRepository;
         this.comicPriceRepository = comicPriceRepository;
         this.comicCharacterRepository = comicCharacterRepository;
@@ -47,7 +44,7 @@ public class ComicServiceImpl implements ComicService {
 
     @Transactional
     @Override
-    public Comic save(ComicDtoRequest comicDtoRequest, MultipartFile file) {
+    public Comic save(ComicDtoRequest comicDtoRequest) {
         //TODO если нет id
         List<Character> idCharacterList = characterRepository.findAllById(comicDtoRequest.getCharactersIds());
         if(idCharacterList.isEmpty()){
@@ -64,19 +61,9 @@ public class ComicServiceImpl implements ComicService {
 
         List<ComicCharacter> comicCharacter = comicDtoRequest.toComicCharacterList(comicDtoRequest, comic);
 
-//        ImageComic imageComic = comicDtoRequest.toImageComic(comicDtoRequest, comic, FOLDER_NAME);
-
-//        ImageComic imageComic = new ImageComic();
-//        imageComic.setComicId(comic);
-//        Path path = imagesFileService.saveFileInDisk(comicDtoRequest.getImage(), FOLDER_ENTITY);
-//        imageComic.setPath(path.toString());
-
         comicPriceRepository.saveAll(comicPrices);
         comicCharacterRepository.saveAll(comicCharacter);
 
-        imagesFileService.saveImageComicInRepository(comic, file, FOLDER_ENTITY);
-//        imagesFileService.saveFile(comicDtoRequest.getImage(), FOLDER_ENTITY);
-//        imageComicRepository.save(imageComic);
         return comic;
     }
 

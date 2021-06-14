@@ -1,6 +1,7 @@
 package ru.stm_labs.marvel.dto;
 
 import lombok.Data;
+import ru.stm_labs.marvel.entities.ImageComic;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +15,12 @@ public class ImageDtoRequest {
     private String path;
 
     @Min(value = 1, message = "Минимальное знaчение id = 1")
-    private Long id;
+    private Long comicOrCharacterId;
+
+    public ImageComic toImageComic(ImageDtoRequest imageDtoRequest) {
+        ImageComic imageComic = new ImageComic();
+        imageComic.setPath(imageDtoRequest.getPath());
+        return imageComic;
+    }
 
 }

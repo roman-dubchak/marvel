@@ -45,7 +45,7 @@ public class Comic extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "character_id"))
     private List<Character> characters;
 
-    private void addImages (ImageComic imageComic){
+    public void addImages(ImageComic imageComic) {
         if (imageComic == null) {
             images = new ArrayList<>();
         }
