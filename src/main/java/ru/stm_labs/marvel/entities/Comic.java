@@ -39,6 +39,7 @@ public class Comic extends BaseEntity {
     private List<ImageComic> images;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "character_comic",
             joinColumns = @JoinColumn(name = "comic-id"),

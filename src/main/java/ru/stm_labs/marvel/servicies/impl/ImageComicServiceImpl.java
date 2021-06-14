@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Service
 public class ImageComicServiceImpl implements ImageComicService {
+
     private static final String FOLDER_NAME = "/images/comic/";
 
     private final ImageComicRepository imageComicRepository;

@@ -6,6 +6,8 @@ import ru.stm_labs.marvel.dto.CharacterDtoRequest;
 import ru.stm_labs.marvel.entities.Character;
 import ru.stm_labs.marvel.entities.Comic;
 import ru.stm_labs.marvel.entities.ComicCharacter;
+import ru.stm_labs.marvel.handlerException.CharacterNotFoundException;
+import ru.stm_labs.marvel.handlerException.ComicNotFoundException;
 import ru.stm_labs.marvel.repositories.CharacterRepository;
 import ru.stm_labs.marvel.repositories.ComicCharacterRepository;
 import ru.stm_labs.marvel.repositories.ComicRepository;
@@ -31,16 +33,18 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public Character findById(Long id) {
-        return characterRepository.findById(id).get();
+        return characterRepository.findById(id).orElseThrow(
+                () -> new CharacterNotFoundException(String.format("Герой с id %s не найден!", id)));
     }
+
 
     @Transactional
     @Override
     public Character save(CharacterDtoRequest characterDtoRequest) {
         //TODO если нет id
         List<Comic> idComicList = comicRepository.findAllById(characterDtoRequest.getComicsIds());
-        if(idComicList.isEmpty()){
-            throw new RuntimeException("");
+        if (idComicList.isEmpty()) {
+            throw new ComicNotFoundException("Ни один комикс не найден!");
         }
 
         Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
@@ -55,7 +59,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character update(CharacterDtoRequest characterDtoRequest, Long id) {
         Character characterUpd = characterRepository.findById(id).orElseThrow(
-                () -> new RuntimeException());
+                () -> new CharacterNotFoundException(String.format("Герой с id %s не найден!", id)));
 
         Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
         characterUpd.setName(character.getName());

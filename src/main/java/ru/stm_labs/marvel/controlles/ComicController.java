@@ -29,7 +29,7 @@ public class ComicController {
         return comicService.findById(id);
     }
 
-    @PostMapping()
+    @PostMapping(name = "")
     public ResponseEntity<ComicDtoRequest> post(@RequestBody @Valid ComicDtoRequest comicDtoRequest) {
         comicService.save(comicDtoRequest);
         return new ResponseEntity<>(comicDtoRequest, HttpStatus.OK);

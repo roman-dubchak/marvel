@@ -3,8 +3,12 @@ package ru.stm_labs.marvel.servicies.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.stm_labs.marvel.dto.ComicDtoRequest;
-import ru.stm_labs.marvel.entities.*;
 import ru.stm_labs.marvel.entities.Character;
+import ru.stm_labs.marvel.entities.Comic;
+import ru.stm_labs.marvel.entities.ComicCharacter;
+import ru.stm_labs.marvel.entities.ComicPrice;
+import ru.stm_labs.marvel.handlerException.CharacterNotFoundException;
+import ru.stm_labs.marvel.handlerException.ComicNotFoundException;
 import ru.stm_labs.marvel.repositories.*;
 import ru.stm_labs.marvel.servicies.ComicService;
 
@@ -13,8 +17,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ComicServiceImpl implements ComicService {
-
-    private static final String FOLDER_ENTITY = "/comic/";
 
     private final ComicRepository comicRepository;
     private final ComicPriceRepository comicPriceRepository;
@@ -39,7 +41,8 @@ public class ComicServiceImpl implements ComicService {
 
     @Override
     public Comic findById(Long id) {
-        return comicRepository.findById(id).get();
+        return comicRepository.findById(id).orElseThrow(
+                () -> new ComicNotFoundException(String.format("Комикc с id %s не найден!", id)));
     }
 
     @Transactional
@@ -47,8 +50,8 @@ public class ComicServiceImpl implements ComicService {
     public Comic save(ComicDtoRequest comicDtoRequest) {
         //TODO если нет id
         List<Character> idCharacterList = characterRepository.findAllById(comicDtoRequest.getCharactersIds());
-        if(idCharacterList.isEmpty()){
-            throw new RuntimeException("");
+        if (idCharacterList.isEmpty()) {
+            throw new CharacterNotFoundException("Ни один комикс не найден!");
         }
 
         Comic comic = comicDtoRequest.toComicFromDto(comicDtoRequest);
@@ -71,7 +74,8 @@ public class ComicServiceImpl implements ComicService {
     @Override
     public Comic update(ComicDtoRequest comicDtoRequest, Long id) {
         Comic comicFind = comicRepository.findById(id).orElseThrow(
-                () -> new RuntimeException());
+                () -> new ComicNotFoundException(String.format("Комикc с id %s не найден!", id)));
+
 
         Comic comic = comicDtoRequest.toComicFromDto(comicDtoRequest);
 

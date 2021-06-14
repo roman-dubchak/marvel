@@ -30,7 +30,7 @@ public class CharacterController {
         return characterService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping(name = "")
     public ResponseEntity<CharacterDtoRequest> post(@RequestBody @Valid CharacterDtoRequest characterDtoRequest) {
         characterService.save(characterDtoRequest);
         return new ResponseEntity<>(characterDtoRequest, HttpStatus.OK);
