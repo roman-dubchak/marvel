@@ -22,7 +22,6 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-//                .apis(RequestHandlerSelectors.any())
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
@@ -32,7 +31,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Authenticate User")
+                .title("Authenticate Marvel")
                 .description("Work in progress")
                 .termsOfServiceUrl("localhost")
                 .version("1.0")

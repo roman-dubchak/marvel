@@ -1,5 +1,8 @@
 package ru.stm_labs.marvel.controlles;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import ru.stm_labs.marvel.servicies.ImageCharacterService;
 
 import javax.validation.Valid;
 
+@Api(value = "Контроллер героев")
 @RestController
 @RequestMapping("api/v1/character")
 public class CharacterController {
@@ -25,11 +29,13 @@ public class CharacterController {
         this.imageCharacterService = imageCharacterService;
     }
 
+    @ApiOperation(value = "Получение героя по id")
     @GetMapping("/{id}")
     public Character get(@PathVariable("id") Long id) {
         return characterService.findById(id);
     }
 
+    @ApiOperation(value = "Добавление нового героя")
     @PostMapping(name = "")
     public ResponseEntity<CharacterDtoRequest> post(@RequestBody @Valid CharacterDtoRequest characterDtoRequest) {
         characterService.save(characterDtoRequest);
@@ -37,6 +43,7 @@ public class CharacterController {
     }
 
     // TODO save images
+    @ApiOperation(value = "Добавление изображения героя по id")
     @PostMapping(name = "/{id}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postUpload(@PathVariable("id") Long id,
                                              @RequestParam(value = "file") MultipartFile file) {
@@ -44,6 +51,7 @@ public class CharacterController {
         return new ResponseEntity<>(file.getName(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Редактирование данных о герое по id")
     @PutMapping("/{id}")
     public ResponseEntity<CharacterDtoRequest> put(@PathVariable("id") Long id,
                                                    @RequestBody @Valid CharacterDtoRequest characterDtoRequest) {
