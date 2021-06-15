@@ -29,9 +29,9 @@ public class Character extends BaseEntity {
     @ManyToMany
     @JsonIgnore
     @JoinTable(
-            name = "character_comic",
+            name = "comic_character",
             joinColumns = @JoinColumn(name = "character_id"),
-            inverseJoinColumns = @JoinColumn(name = "comic-id"))
+            inverseJoinColumns = @JoinColumn(name = "comic_id"))
     private List<Comic> comics;
 
     public void addImages(ImageCharacter imageCharacter) {

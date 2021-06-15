@@ -1,11 +1,12 @@
 package ru.stm_labs.marvel.servicies;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import ru.stm_labs.marvel.dto.ComicDtoRequest;
+import ru.stm_labs.marvel.dto.ComicDtoResponse;
+import ru.stm_labs.marvel.dto.FilterComicDto;
+import ru.stm_labs.marvel.dto.page.PageDto;
 import ru.stm_labs.marvel.entities.Comic;
-
-import java.util.List;
 
 @Service
 public interface ComicService {
@@ -16,6 +17,7 @@ public interface ComicService {
 
     Comic update(ComicDtoRequest ComicDtoRequest, Long id);
 
-    List<Comic> findAll();
+    PageDto<ComicDtoResponse> findAll(FilterComicDto filterComicDto,
+                                      int page, int size, Sort sort);
 
 }

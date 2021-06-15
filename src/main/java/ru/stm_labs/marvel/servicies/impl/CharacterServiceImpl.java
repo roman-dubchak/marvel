@@ -1,8 +1,17 @@
 package ru.stm_labs.marvel.servicies.impl;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.stm_labs.marvel.dto.CharacterDtoRequest;
+import ru.stm_labs.marvel.dto.CharacterDtoResponse;
+import ru.stm_labs.marvel.dto.FilterCharacterDto;
+import ru.stm_labs.marvel.dto.page.CreatePageData;
+import ru.stm_labs.marvel.dto.page.PageData;
+import ru.stm_labs.marvel.dto.page.PageDto;
+import ru.stm_labs.marvel.dto.page.PageDtoCreator;
 import ru.stm_labs.marvel.entities.Character;
 import ru.stm_labs.marvel.entities.Comic;
 import ru.stm_labs.marvel.entities.ComicCharacter;
@@ -11,9 +20,11 @@ import ru.stm_labs.marvel.handlerException.ComicNotFoundException;
 import ru.stm_labs.marvel.repositories.CharacterRepository;
 import ru.stm_labs.marvel.repositories.ComicCharacterRepository;
 import ru.stm_labs.marvel.repositories.ComicRepository;
+import ru.stm_labs.marvel.repositories.specification.CharacterSpecification;
 import ru.stm_labs.marvel.servicies.CharacterService;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -21,7 +32,6 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final ComicRepository comicRepository;
     private final ComicCharacterRepository comicCharacterRepository;
-
 
     public CharacterServiceImpl(CharacterRepository characterRepository,
                                 ComicRepository comicRepository,
@@ -71,7 +81,24 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public List<Character> findAll() {
-        return characterRepository.findAll();
+    public PageDto<CharacterDtoResponse> findAll(FilterCharacterDto filterCharacterDto,
+                                                 int page, int size, Sort sort) {
+        PageData pageData = CreatePageData.createPageData(page, size, sort);
+        BooleanExpression predicate = CharacterSpecification.createPredicate(
+                filterCharacterDto.getIdComic(),
+                filterCharacterDto.getName(),
+                filterCharacterDto.getDescription(),
+                filterCharacterDto.getResourceUri(),
+                filterCharacterDto.getModified()
+        );
+
+        Page<Character> characterPage = characterRepository.findAll(predicate, pageData);
+        Function<Character, CharacterDtoResponse> convert = Character -> toCharacterDtoResponse(Character);
+
+        return PageDtoCreator.createReadQueryResult(characterPage, convert);
+    }
+
+    private CharacterDtoResponse toCharacterDtoResponse(Character character){
+        return new CharacterDtoResponse().toCharacterDtoResponse(character);
     }
 }

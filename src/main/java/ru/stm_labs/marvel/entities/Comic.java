@@ -41,8 +41,8 @@ public class Comic extends BaseEntity {
     @ManyToMany
     @JsonIgnore
     @JoinTable(
-            name = "character_comic",
-            joinColumns = @JoinColumn(name = "comic-id"),
+            name = "comic_character",
+            joinColumns = @JoinColumn(name = "comic_id"),
             inverseJoinColumns = @JoinColumn(name = "character_id"))
     private List<Character> characters;
 
