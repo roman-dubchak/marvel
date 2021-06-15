@@ -16,5 +16,4 @@ public class ComicCharacterId implements Serializable {
     @Column(name = "character_id")
     private Long characterId;
 
-
 }

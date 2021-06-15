@@ -26,5 +26,4 @@ public enum TypeComic {
             throw new IllegalArgumentException("Unknown enum type " + typeComic + ", " +
                     "Allowed values are " + Arrays.toString(values()));
         }
-
 }

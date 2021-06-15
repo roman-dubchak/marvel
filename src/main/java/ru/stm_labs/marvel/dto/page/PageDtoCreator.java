@@ -1,6 +1,5 @@
 package ru.stm_labs.marvel.dto.page;
 
-
 import org.springframework.data.domain.Page;
 
 import java.util.List;

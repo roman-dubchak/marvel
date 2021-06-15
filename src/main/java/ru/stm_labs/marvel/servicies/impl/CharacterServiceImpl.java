@@ -51,7 +51,6 @@ public class CharacterServiceImpl implements CharacterService {
     @Transactional
     @Override
     public Character save(CharacterDtoRequest characterDtoRequest) {
-        //TODO если нет id
         List<Comic> idComicList = comicRepository.findAllById(characterDtoRequest.getComicsIds());
         if (idComicList.isEmpty()) {
             throw new ComicNotFoundException("Ни один комикс не найден!");
@@ -70,13 +69,11 @@ public class CharacterServiceImpl implements CharacterService {
     public Character update(CharacterDtoRequest characterDtoRequest, Long id) {
         Character characterUpd = characterRepository.findById(id).orElseThrow(
                 () -> new CharacterNotFoundException(String.format("Герой с id %s не найден!", id)));
-
         Character character = characterDtoRequest.toCharacterFromDto(characterDtoRequest);
         characterUpd.setName(character.getName());
         characterUpd.setDescription(character.getDescription());
         characterUpd.setName(character.getName());
         characterUpd.setResourceUri(character.getResourceUri());
-
         return characterRepository.save(characterUpd);
     }
 

@@ -1,17 +1,13 @@
 package ru.stm_labs.marvel.dto;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 import ru.stm_labs.marvel.entities.Comic;
 import ru.stm_labs.marvel.entities.ComicCharacter;
 import ru.stm_labs.marvel.entities.ComicCharacterId;
-import ru.stm_labs.marvel.entities.ImageComic;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 

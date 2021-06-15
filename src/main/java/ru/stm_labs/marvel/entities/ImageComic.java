@@ -15,5 +15,4 @@ public class ImageComic extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "comic_id")
     private Comic comicId;
-
 }

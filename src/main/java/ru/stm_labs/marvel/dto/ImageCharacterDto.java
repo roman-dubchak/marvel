@@ -25,7 +25,6 @@ public class ImageCharacterDto {
         return characters.stream()
                 .map(i -> toImageDto(i))
                 .collect(Collectors.toList());
-
     }
 
 }

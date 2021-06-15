@@ -28,9 +28,4 @@ public class ComicCharacter {
     @Column(name = "active", columnDefinition = "boolean default true")
     private Boolean active = true;
 
-//    @PostConstruct
-//    private void init(){
-//        this.active = true;
-//    }
-
 }

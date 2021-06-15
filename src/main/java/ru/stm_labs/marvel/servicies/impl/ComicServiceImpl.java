@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.stm_labs.marvel.dto.*;
+import ru.stm_labs.marvel.dto.ComicDtoRequest;
+import ru.stm_labs.marvel.dto.ComicDtoResponse;
+import ru.stm_labs.marvel.dto.FilterComicDto;
 import ru.stm_labs.marvel.dto.page.CreatePageData;
 import ru.stm_labs.marvel.dto.page.PageData;
 import ru.stm_labs.marvel.dto.page.PageDto;
@@ -16,8 +18,10 @@ import ru.stm_labs.marvel.entities.ComicCharacter;
 import ru.stm_labs.marvel.entities.ComicPrice;
 import ru.stm_labs.marvel.handlerException.CharacterNotFoundException;
 import ru.stm_labs.marvel.handlerException.ComicNotFoundException;
-import ru.stm_labs.marvel.repositories.*;
-import ru.stm_labs.marvel.repositories.specification.CharacterSpecification;
+import ru.stm_labs.marvel.repositories.CharacterRepository;
+import ru.stm_labs.marvel.repositories.ComicCharacterRepository;
+import ru.stm_labs.marvel.repositories.ComicPriceRepository;
+import ru.stm_labs.marvel.repositories.ComicRepository;
 import ru.stm_labs.marvel.repositories.specification.ComicSpecification;
 import ru.stm_labs.marvel.servicies.ComicService;
 
@@ -32,21 +36,15 @@ public class ComicServiceImpl implements ComicService {
     private final ComicPriceRepository comicPriceRepository;
     private final ComicCharacterRepository comicCharacterRepository;
     private final CharacterRepository characterRepository;
-    private final ImageComicRepository imageComicRepository;
-    private final ImageComicServiceImpl imagesFileService;
 
     public ComicServiceImpl(ComicRepository comicRepository,
                             ComicPriceRepository comicPriceRepository,
                             ComicCharacterRepository comicCharacterRepository,
-                            CharacterRepository characterRepository,
-                            ImageComicRepository imageComicRepository,
-                            ImageComicServiceImpl imagesFileService) {
+                            CharacterRepository characterRepository) {
         this.comicRepository = comicRepository;
         this.comicPriceRepository = comicPriceRepository;
         this.comicCharacterRepository = comicCharacterRepository;
         this.characterRepository = characterRepository;
-        this.imageComicRepository = imageComicRepository;
-        this.imagesFileService = imagesFileService;
     }
 
     @Override
@@ -58,7 +56,6 @@ public class ComicServiceImpl implements ComicService {
     @Transactional
     @Override
     public Comic save(ComicDtoRequest comicDtoRequest) {
-        //TODO если нет id
         List<Character> idCharacterList = characterRepository.findAllById(comicDtoRequest.getCharactersIds());
         if (idCharacterList.isEmpty()) {
             throw new CharacterNotFoundException("Ни один комикс не найден!");
@@ -80,21 +77,17 @@ public class ComicServiceImpl implements ComicService {
         return comic;
     }
 
-
     @Override
     public Comic update(ComicDtoRequest comicDtoRequest, Long id) {
         Comic comicFind = comicRepository.findById(id).orElseThrow(
                 () -> new ComicNotFoundException(String.format("Комикc с id %s не найден!", id)));
-
         Comic comic = comicDtoRequest.toComicFromDto(comicDtoRequest);
-
         comicFind.setTitle(comic.getTitle());
         comicFind.setDescription(comic.getDescription());
         comicFind.setFormat(comic.getFormat());
         comicFind.setPageCount(comic.getPageCount());
         comicFind.setText(comic.getText());
         comicFind.setResourceUri(comic.getResourceUri());
-
         return comicRepository.save(comicFind);
     }
 
@@ -119,7 +112,7 @@ public class ComicServiceImpl implements ComicService {
         return PageDtoCreator.createReadQueryResult(comicPage, convert);
     }
 
-    private ComicDtoResponse toComicDtoResponse(Comic comic){
+    private ComicDtoResponse toComicDtoResponse(Comic comic) {
         return new ComicDtoResponse().toComicDtoResponse(comic);
     }
 }

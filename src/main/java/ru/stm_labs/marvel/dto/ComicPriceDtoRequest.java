@@ -30,25 +30,4 @@ public class ComicPriceDtoRequest {
         return comicPrice;
     }
 
-    public List<ComicPrice> toComicPriceListFromDto(List<ComicPriceDtoRequest> comicPriceDtoRequests, Comic comic) {
-        return comicPriceDtoRequests
-                .stream()
-                .map(c -> toComicPriceFromDto(c, comic))
-                .collect(Collectors.toList());
-    }
-
-    public ComicPriceDtoRequest toComicPriceDtoResponse(ComicPrice comicPrice) {
-        ComicPriceDtoRequest comicPriceDtoRequest = new ComicPriceDtoRequest();
-        comicPriceDtoRequest.setTypeComic(comicPrice.getTypeComic().getTypeComic());
-        comicPriceDtoRequest.setPrice(comicPrice.getPrice());
-        return comicPriceDtoRequest;
-    }
-
-    public List<ComicPriceDtoRequest> toComicPriceDtoResponseList(List<ComicPrice> comicPriceList) {
-        return comicPriceList
-                .stream()
-                .map(c -> (toComicPriceDtoResponse(c)))
-                .collect(Collectors.toList());
-    }
-
 }

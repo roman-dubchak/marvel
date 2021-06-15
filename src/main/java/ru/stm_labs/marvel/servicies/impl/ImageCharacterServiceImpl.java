@@ -13,12 +13,12 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-public class ImageChacterServiceImpl implements ImageCharacterService {
+public class ImageCharacterServiceImpl implements ImageCharacterService {
     private static final String FOLDER_NAME = "/images/character/";
 
     private final ImageCharacterRepository imageCharacterRepository;
 
-    public ImageChacterServiceImpl(ImageCharacterRepository imageCharacterRepository) {
+    public ImageCharacterServiceImpl(ImageCharacterRepository imageCharacterRepository) {
         this.imageCharacterRepository = imageCharacterRepository;
     }
 
